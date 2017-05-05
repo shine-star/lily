@@ -1,13 +1,17 @@
-// import 'babel-polyfill';
+import Game from './game';
+import Renderer from './renderer'
 
 async function timeout(ms) {
   return new Promise(resolve => { setTimeout(resolve, ms); });
 }
 
+let renderer = new Renderer();
+let game = new Game(renderer);
+
 (async () => {
   "use strict";
-  for( let i=0; i<10; i++ ){
-    await timeout(1000);
-    document.write("A");
-  }
+  await game.start();
+  console.log("ended.");
 })();
+
+//engine.start();

@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
+    "watch": "webpack -w",
     "start": "webpack-dev-server"
   },
   "devDependencies": {
@@ -21,6 +22,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
-    "babel-runtime": "^6.23.0"
+    "babel-runtime": "^6.23.0",
+    "pixi.js": "^4.5.1"
   }
 }
