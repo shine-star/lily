@@ -1,0 +1,9 @@
+{
+  "name": "novelgame-next",
+  "version": "0.0.1",
+  "description": "Prototype novelgame-engine",
+  "main": "index.js",
+  "repository": "git@github.com:AknEp/novelgame-next.git",
+  "author": "AknEp",
+  "license": "MIT"
+}
