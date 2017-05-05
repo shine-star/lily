@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "git@github.com:AknEp/novelgame-next.git",
   "author": "AknEp",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "webpack": "^2.5.0"
+  }
 }
