@@ -6,20 +6,21 @@ class Engine {
     this.renderer = renderer;
     this.loader = loader;
   }
-  async image(label, filename, options = {}){
-    // TODO: pickup filename from manifest ?
-    const resource = await this.loader.add(filename, filename+".jpg");
-    await this.renderer.addImage(label, filename, resource);
-    if( options.alpha ){
-      this.renderer.sprites[label].alpha = options.alpha;
-    }
+  async wait({time= 0} = {}) {
+    return new Promise(resolve => { setTimeout(resolve, time); });
   }
-  async remove(label){
+
+  async image({label, storage, opacity = 1.0} = {}){
+    // TODO: pickup filename from manifest ?
+    const resource = await this.loader.add(storage, storage+".jpg");
+    await this.renderer.addImage(label, storage, resource);
+    this.renderer.sprites[label].alpha = opacity;
+  }
+  async remove({label} = {}){
     await this.renderer.removeImage(label);
   }
-  async fade(label, options = {}){
-    // console.log("[Label] alpha: " + options.alpha + ", duration: " + options.duration);
-    await this.renderer.fade(label, options.alpha, options.duration)
+  async fade({label, opacity = 1.0, duration = 0}){
+    await this.renderer.fade(label, opacity, duration)
   }
 }
 
