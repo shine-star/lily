@@ -1,6 +1,3 @@
-async function timeout(ms) {
-  return new Promise(resolve => { setTimeout(resolve, ms); });
-}
 
 
 class Engine {
@@ -9,13 +6,13 @@ class Engine {
     this.renderer = renderer;
     this.loader = loader;
   }
-  async bgimage(filename){
-    //TODO: pickup filename from manifest ?
+  async image(label, filename){
+    // TODO: pickup filename from manifest ?
     const resource = await this.loader.add(filename, filename+".jpg");
-    await timeout(3000);
-    await this.renderer.drawBGImage(filename, resource);
-    await timeout(3000);
-    await this.renderer.removeBGImage();
+    await this.renderer.addImage(label, filename, resource);
+  }
+  async remove(label){
+    await this.renderer.removeImage(label);
   }
 }
 

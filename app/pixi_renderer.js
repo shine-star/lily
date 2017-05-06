@@ -3,27 +3,25 @@ import 'pixi.js';
 class PixiRenderer {
   constructor(){
     // TODO: resolution option
-    let pixi = new PIXI.Application({width: 1920, height: 1080, resolution: 1/2});
-    document.body.appendChild(pixi.view);
-    this.pixi = pixi;
+    this.pixi = new PIXI.Application({width: 1920, height: 1080, resolution: 1/3});
+    document.body.appendChild(this.pixi.view);
+    this.sprites = {};
   }
-  async drawBGImage(filename, resource){
+
+  async addImage(label, filename, resource){
     let resources = resource.resources;
-    var sprite = new PIXI.Sprite(resources[filename].texture);
+    let sprite = new PIXI.Sprite(resources[filename].texture);
+    this.sprites[label] = sprite;
     this.pixi.stage.addChild(sprite);
-    this.bg = sprite;
-
-    // TODO: texture image size based scaling?
-
-    // ee.x = this.pixi.renderer.width / 2;
-    // ee.y = this.pixi.renderer.height / 2;
-    // ee.anchor.x = 0.5;
-    // ee.anchor.y = 0.5;
   }
-  async removeBGImage(){
-    // how to remove bg sprite?
-    this.pixi.stage.removeChild(this.bg);
+
+  async removeImage(label){
+    if( this.sprites[label] ){
+      this.pixi.stage.removeChild(this.sprites[label]);
+      delete this.sprites[label];
+    }
   }
+
 }
 
 export default PixiRenderer;
