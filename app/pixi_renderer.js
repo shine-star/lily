@@ -24,30 +24,37 @@ class PixiRenderer {
   }
 
   async fade(label, alpha, duration){
-    return new Promise(resolve => {
-      const sprite = this.sprites[label];
-      if( sprite ){
-        const startAlpha = sprite.alpha;
-        const start = Date.now();
-        const f = ()=> {
-          const current = Date.now();
-          const d = current - start;
-          if( d > duration ){
-            resolve();
-            return;
-          }
-          const newAlpha = startAlpha +  d * ((alpha - startAlpha)/duration);
-          // console.log("newAlpha: " + newAlpha);
-          sprite.alpha = newAlpha;
-
-          window.requestAnimationFrame(f);
-        };
-        f(start);
-      }
-    });
+    const sprite = this.sprites[label];
+    if( sprite ) {
+      const startAlpha = sprite.alpha;
+      await animate(duration, (rate)=>{
+        sprite.alpha = startAlpha + rate * (alpha - startAlpha);
+      });
+    }
     // TODO: else assertion
   }
+}
 
+// requestAnimationFrame wrapper, callbackは開始時からのdurationをミリ秒で受け取り、終わるとPromiseがresolveされます
+async function animate(duration, callback){
+  "use strict";
+  return new Promise(resolve => {
+      const start = Date.now();
+      const f = ()=> {
+        const current = Date.now();
+        const delta = current - start;
+        if( delta > duration ){
+          callback(1.0);
+          resolve();
+          return;
+        }
+        callback(delta / duration);
+
+        window.requestAnimationFrame(f);
+      };
+      f(start);
+    }
+  );
 }
 
 export default PixiRenderer;
