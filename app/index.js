@@ -1,17 +1,13 @@
 import Game from './game';
-import Renderer from './renderer'
+import PixiRenderer from './pixi_renderer'
+import PixiLoader from './pixi_loader';
 
-async function timeout(ms) {
-  return new Promise(resolve => { setTimeout(resolve, ms); });
-}
-
-let renderer = new Renderer();
-let game = new Game(renderer);
+let loader = new PixiLoader();
+let renderer = new PixiRenderer();
+let game = new Game(renderer, loader);
 
 (async () => {
   "use strict";
   await game.start();
   console.log("ended.");
 })();
-
-//engine.start();
