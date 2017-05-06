@@ -20,6 +20,32 @@ class PixiRenderer {
       this.pixi.stage.removeChild(this.sprites[label]);
       delete this.sprites[label];
     }
+    // TODO: else assertion
+  }
+
+  async fade(label, alpha, duration){
+    return new Promise(resolve => {
+      const sprite = this.sprites[label];
+      if( sprite ){
+        const startAlpha = sprite.alpha;
+        const start = Date.now();
+        const f = ()=> {
+          const current = Date.now();
+          const d = current - start;
+          if( d > duration ){
+            resolve();
+            return;
+          }
+          const newAlpha = startAlpha +  d * ((alpha - startAlpha)/duration);
+          // console.log("newAlpha: " + newAlpha);
+          sprite.alpha = newAlpha;
+
+          window.requestAnimationFrame(f);
+        };
+        f(start);
+      }
+    });
+    // TODO: else assertion
   }
 
 }

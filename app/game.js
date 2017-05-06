@@ -9,14 +9,17 @@ class Game {
   }
   async start(){
     // converted scripts:
-    await timeout(1000);
-    await this.engine.image("bg", "everett_effect");
-    await timeout(1000);
+    await wait(1000);
+    await this.engine.image("bg", "everett_effect", {alpha: 0.1});
+    await this.engine.fade("bg", {alpha: 1.0, duration: 2000});
+    // await this
+    await wait(1000);
+    await this.engine.fade("bg", {alpha: 0.0, duration: 2000});
     await this.engine.remove("bg");
   }
 }
 
-async function timeout(ms) {
+async function wait(ms) {
   return new Promise(resolve => { setTimeout(resolve, ms); });
 }
 
