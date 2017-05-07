@@ -37,10 +37,16 @@ class Engine {
       return new Promise(resolve => { setTimeout(resolve, time); });
     };
 
-    this.tags.image = async ({label, storage, opacity = 1.0, left=0, top=0, scale=1.0} = {}) => {
+    this.tags.image = async ({label, storage, opacity = 1.0, left=0, top=0, scale=1.0, under="", over=""} = {}) => {
       // TODO: pickup filename from manifest ?
       const resource = await this.loader.addImage(storage);
-      await this.renderer.addImage(label, resource);
+      if( over.length > 0 ){
+        await this.renderer.addImageOver(label, resource, over);
+      }else if( under.length > 0 ){
+        await this.renderer.addImageUnder(label, resource, under);
+      }else{
+        await this.renderer.addImage(label, resource);
+      }
       const sprite = this.renderer.sprites[label];
       sprite.alpha = opacity;
       sprite.x = left;

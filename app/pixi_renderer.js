@@ -14,6 +14,25 @@ class PixiRenderer {
     this.pixi.stage.addChild(sprite);
   }
 
+  async _addImageWithOtherSprite(label, resource, guide, offset){
+    let sprite = new PIXI.Sprite(resource.texture);
+
+    const that = this.sprites[guide];
+    if( that == undefined ){ throw new Error("Sprite named " + guide + " is not exists." ) }
+
+    this.sprites[label] = sprite;
+    const index = that.parent.children.indexOf(that);
+    that.parent.addChildAt(sprite, index+offset);
+  }
+
+  async addImageUnder(label, resource, under){
+    return this._addImageWithOtherSprite(label, resource, under, 0);
+  }
+
+  async addImageOver(label, resource, over){
+    return this._addImageWithOtherSprite(label, resource, over, 1);
+  }
+
   async removeImage(label){
     if( this.sprites[label] ){
       this.pixi.stage.removeChild(this.sprites[label]);
