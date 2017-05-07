@@ -19,7 +19,7 @@ class Engine {
 
     this.tags.image = async ({label, storage, opacity = 1.0} = {}) => {
       // TODO: pickup filename from manifest ?
-      const resource = await this.loader.add(storage, storage+".jpg");
+      const resource = await this.loader.add(storage, "data/image/"+storage+".jpg");
       await this.renderer.addImage(label, storage, resource);
       this.renderer.sprites[label].alpha = opacity;
     };
