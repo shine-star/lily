@@ -37,11 +37,15 @@ class Engine {
       return new Promise(resolve => { setTimeout(resolve, time); });
     };
 
-    this.tags.image = async ({label, storage, opacity = 1.0} = {}) => {
+    this.tags.image = async ({label, storage, opacity = 1.0, left=0, top=0, scale=1.0} = {}) => {
       // TODO: pickup filename from manifest ?
       const resource = await this.loader.addImage(storage);
       await this.renderer.addImage(label, resource);
-      this.renderer.sprites[label].alpha = opacity;
+      const sprite = this.renderer.sprites[label];
+      sprite.alpha = opacity;
+      sprite.x = left;
+      sprite.y = top;
+      sprite.scale.set(scale, scale);
     };
 
     this.tags.remove = async ({label} = {}) => {
