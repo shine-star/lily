@@ -4,7 +4,7 @@
   // [wait time=1000]
   await tags.wait({time: 1000});
   // [image label="bg" storage="everett_effect" opacity=0.1]
-  await tags.image({label: "bg", storage: "everett_effect", opacity: 0.1});
+  await tags.image({label: "bg", storage: "everett_effect.jpg", opacity: 0.1});
   // [fade label="bg" opacity=0.1 duration=2000]
   await tags.fade({label: "bg", opacity: 1.0, duration: 2000});
   // [wait time=1000]
@@ -13,6 +13,9 @@
   await tags.fade({label: "bg", opacity: 0.0, duration: 2000});
   // [remove label="bg"]
   await tags.remove({label: "bg"});
+  // [jump storage="first.js"]
+  await tags.call({storage: "first.js"});
+  return;
   // ===== Lily Script End =====
 })().then(()=>{
   "use strict";

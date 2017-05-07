@@ -8,9 +8,8 @@ class PixiRenderer {
     this.sprites = {};
   }
 
-  async addImage(label, filename, resource){
-    let resources = resource.resources;
-    let sprite = new PIXI.Sprite(resources[filename].texture);
+  async addImage(label, resource){
+    let sprite = new PIXI.Sprite(resource.texture);
     this.sprites[label] = sprite;
     this.pixi.stage.addChild(sprite);
   }

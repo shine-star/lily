@@ -7,7 +7,7 @@ class Game {
     this.engine = new Engine(renderer, loader);
   }
   async start(){
-    await this.engine.runScript('data/scenario/first.js');
+    await this.engine.runScript('first.js');
   }
 
 }

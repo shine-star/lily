@@ -15,8 +15,9 @@ class Engine {
   }
 
   async runScript(filename){
+    const path = "data/scenario/" + filename;
     //TODO: あらゆる観点でのエラー処理, 単にfetchを呼ぶのではなくオプションを正しく指定したwrapperを用意したい（redirectをフォローすべきでない、等があるので。）
-    const response = await fetch(filename);
+    const response = await fetch(path);
     const raw = await response.text();
     const transformedJS = Babel.transform(raw, { presets: ['es2017'] }).code;
     const asyncGameFunc = new Function("resolve", "tags", transformedJS);
@@ -38,8 +39,8 @@ class Engine {
 
     this.tags.image = async ({label, storage, opacity = 1.0} = {}) => {
       // TODO: pickup filename from manifest ?
-      const resource = await this.loader.add(storage, "data/image/"+storage+".jpg");
-      await this.renderer.addImage(label, storage, resource);
+      const resource = await this.loader.addImage(storage);
+      await this.renderer.addImage(label, resource);
       this.renderer.sprites[label].alpha = opacity;
     };
 
@@ -51,7 +52,13 @@ class Engine {
       await this.renderer.fade(label, opacity, duration)
     };
 
+    this.tags.call = async ({storage="", target=""} = {} ) => {
+      if(target){
+        throw new Error("label jump (target argument) is not implemented yet.");
+      }
 
+      this.runScript(storage);
+    };
   }
 
 

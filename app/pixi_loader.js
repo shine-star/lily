@@ -7,11 +7,21 @@ class PixiLoader {
 
   async add(name, path){
     return new Promise(resolve => {
+      if( PIXI.loader.resources[name] ){
+        resolve(PIXI.loader.resources[name]);
+        return;
+      }
       this.loader.add(name, path).load((loader, resources)=>{
-        resolve({loader: loader, resources: resources});
+        resolve(resources[name]);
       });
     });
   }
+
+  async addImage(filename){
+    const name = "image/"+filename;
+    return this.add(name, "data/"+name);
+  }
+
 }
 
 export default PixiLoader;
