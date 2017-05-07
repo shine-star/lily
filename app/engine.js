@@ -21,7 +21,7 @@ class Engine {
     const raw = await response.text();
     const transformedJS = Babel.transform(raw, { presets: ['es2017'] }).code;
     const asyncGameFunc = new Function("resolve", "tags", transformedJS);
-    this.runScriptFunc((tags)=>{
+    await this.runScriptFunc((tags)=>{
       return new Promise(resolve => { asyncGameFunc(resolve, tags); });
     });
   }
