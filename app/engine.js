@@ -58,8 +58,12 @@ class Engine {
       await this.renderer.removeImage(label);
     };
 
-    this.tags.fade = async ({label, opacity = 1.0, duration = 0}) => {
-      await this.renderer.fade(label, opacity, duration)
+    this.tags.fade = async ({label, opacity = 1.0, time = 0}) => {
+      await this.renderer.fade(label, opacity, time)
+    };
+
+    this.tags.move = async ({label, left = undefined, top = undefined, time = 0}) => {
+      await this.renderer.move(label, left, top, time);
     };
 
     this.tags.call = async ({storage="", target=""} = {} ) => {

@@ -51,6 +51,22 @@ class PixiRenderer {
     }
     // TODO: else assertion
   }
+
+  async move(label, left, top, duration){
+    const sprite = this.sprites[label];
+    if( sprite ) {
+      const startX = sprite.x;
+      const startY = sprite.y;
+      const endX = left || sprite.x;
+      const endY = top || sprite.y;
+
+      await animate(duration, (rate)=>{
+        sprite.x = startX + rate * (endX - startX);
+        sprite.y = startY + rate * (endY - startY);
+      });
+    }
+  }
+  
 }
 
 // requestAnimationFrame wrapper, callbackは開始時からのdurationをミリ秒で受け取り、終わるとPromiseがresolveされます
