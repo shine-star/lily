@@ -1,21 +1,32 @@
 import 'pixi.js';
 
-import Script from './script';
 import Engine from './engine';
+
+import * as Babel from 'babel-standalone';
+
+import 'whatwg-fetch';
 
 class Game {
   constructor(renderer, loader){
     this.engine = new Engine(renderer, loader);
   }
   async start(){
-    let context = {};
-    // this束縛がアレだなー。 class内のときでもarrowにすればいいのか？
-    context.wait = this.engine.wait.bind(this.engine);
-    context.image = this.engine.image.bind(this.engine);
-    context.remove = this.engine.remove.bind(this.engine);
-    context.fade = this.engine.fade.bind(this.engine);
+    await this.runScript('script.js');
+  }
 
-    Script.call(context);
+  async runScript(filename){
+    //TODO: あらゆる観点でのエラー処理, 単にfetchを呼ぶのではなくオプションを正しく指定したwrapperを用意したい（redirectをフォローすべきでない、等があるので。）
+    const response = await fetch(filename);
+    const raw = await response.text();
+    const transformedJS = Babel.transform(raw, { presets: ['es2017'] }).code;
+    const asyncGameFunc = new Function("resolve", "tags", transformedJS);
+    this.runWithTags((tags)=>{
+      return new Promise(resolve => { asyncGameFunc(resolve, tags); });
+    });
+  }
+
+  async runWithTags(script){
+    await script(this.engine.tags);
   }
 }
 
