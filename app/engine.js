@@ -1,4 +1,8 @@
 
+import * as Babel from 'babel-standalone';
+
+import 'whatwg-fetch';
+
 //TODO: Engineにマクロを外部から足す方法を提供すること！ DIっぽい感じで。
 class Engine {
   // TODO: constructor should get renderer
@@ -8,6 +12,21 @@ class Engine {
     this.tags = {};
 
     this.define_standard_tags();
+  }
+
+  async runScript(filename){
+    //TODO: あらゆる観点でのエラー処理, 単にfetchを呼ぶのではなくオプションを正しく指定したwrapperを用意したい（redirectをフォローすべきでない、等があるので。）
+    const response = await fetch(filename);
+    const raw = await response.text();
+    const transformedJS = Babel.transform(raw, { presets: ['es2017'] }).code;
+    const asyncGameFunc = new Function("resolve", "tags", transformedJS);
+    this.runScriptFunc((tags)=>{
+      return new Promise(resolve => { asyncGameFunc(resolve, tags); });
+    });
+  }
+
+  async runScriptFunc(script){
+    await script(this.tags);
   }
 
   //TODO: 外部からマクロ的にタグ定義する方法を考えてないので暫定的。
@@ -31,7 +50,11 @@ class Engine {
     this.tags.fade = async ({label, opacity = 1.0, duration = 0}) => {
       await this.renderer.fade(label, opacity, duration)
     };
+
+
   }
+
+
 
 }
 
