@@ -66,7 +66,13 @@ class PixiRenderer {
       });
     }
   }
-  
+
+  async relabel(label, newlabel){
+    const sprite = this.sprites[label];
+    this.sprites[newlabel] = sprite;
+    delete this.sprites[label];
+  }
+
 }
 
 // requestAnimationFrame wrapper, callbackは開始時からのdurationをミリ秒で受け取り、終わるとPromiseがresolveされます

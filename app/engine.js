@@ -66,6 +66,10 @@ class Engine {
       await this.renderer.move(label, left, top, time);
     };
 
+    this.tags.relabel = async ({label, newlabel}) => {
+      await this.renderer.relabel(label, newlabel);
+    };
+
     this.tags.call = async ({storage="", target=""} = {} ) => {
       if(target){
         throw new Error("label jump (target argument) is not implemented yet.");

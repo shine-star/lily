@@ -11,6 +11,27 @@
   await tags.image({label: "lily", storage: "M_LILY_A_04a.png", opacity: 0.0, left: 400, top: 100, scale: 1.6});
   await tags.fade({label: "lily", opacity: 1.0, time: 500});
 
+  // 表情変化
+  /* 以下のようなスクリプトで実現したいと思っている。
+  * ただしsequence内はマクロに括り出すことを推奨とする。たぶん。
+  * [parallel]
+  *   [fade label=lily opacity=0.0 time=500]
+  *   [sequence]
+  *     [image label="lily2" storage="M_LILY_B_05b.png" ………割愛]
+  *     [fade label="lily2" ………割愛]
+  *   [endsequence]
+  * [endparallel]
+  */
+  await Promise.all([
+      tags.fade({label: "lily", opacity: 0.0, time: 500}) ,
+      (async ()=>{
+        await tags.image({label: "lily2", storage: "M_LILY_B_05b.png", opacity: 0.0, left: 400, top: 100, scale: 1.6});
+        await tags.fade({label: "lily2", opacity: 1.0, time: 500});
+      })()
+  ]);
+
+  await tags.relabel({label: "lily2", newlabel: "lily"});
+
   // ここで、ryoが下に表示されて欲しい（under指定が有効であることの確認）
   await tags.image({label: "ryo", storage: "M_RYO_A_01a.png", opacity: 0.0, left: 800, top: 100, scale: 1.6, under: "lily"});
   await tags.fade({label: "ryo", opacity: 1.0, time: 500});
