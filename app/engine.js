@@ -77,6 +77,10 @@ class Engine {
 
       this.runScript(storage);
     };
+
+    this.tags.macro = (name, func) => {
+      this.tags[name] = func;
+    }
   }
 
 
