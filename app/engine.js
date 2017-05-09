@@ -13,7 +13,7 @@ class Engine {
   }
 
   async run(){
-    await this.loadSystem('init.js');
+    await this.evaluateSystemAsync('data/system/init.js');
   }
 
   async evaluateScript(path){
@@ -24,6 +24,16 @@ class Engine {
     await ((tags)=>{
       return new Promise(resolve => { asyncGameFunc(resolve, tags); });
     })(this.tags);
+  }
+
+  async evaluateSystemAsync(path){
+    //TODO: あらゆる観点でのエラー処理, 単にfetchを呼ぶのではなくオプションを正しく指定したwrapperを用意したい（redirectをフォローすべきでない、等があるので。）
+    const response = await fetch(path);
+    const raw = await response.text();
+    const asyncGameFunc = new Function("resolve", "engine", this.transform(raw));
+    await ((engine)=>{
+      return new Promise(resolve => { asyncGameFunc(resolve, engine); });
+    })(this);
   }
 
   async evaluateSystem(path){

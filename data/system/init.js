@@ -1,5 +1,10 @@
-engine.loadSystem("control.js");
-engine.loadSystem("graphics.js");
-engine.loadSystem("text.js");
-
-engine.runScript("first.js");
+(async ()=>{
+  "use strict";
+  await engine.loadSystem("control.js");
+  await engine.loadSystem("graphics.js");
+  await engine.loadSystem("text.js");
+  await engine.runScript("first.js");
+})().then(()=>{
+  "use strict";
+  resolve();
+});
