@@ -13,11 +13,13 @@
   });
 
   // [wait time=500]
-  await tags.wait({time: 500});
-  await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 1000});
+  //await tags.wait({time: 500});
+  await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 100});
 
-  await tags.text({label: "message", text: "こんにちは！"});
+  await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
   await tags.wait({time: 2000});
+
+  return;
 
   await tags.fadein({label: "lily", storage: "M_LILY_A_04a.png", left: 400, top: 100, scale: 1.6, time: 500});
 
