@@ -11,6 +11,8 @@ export default class Letter extends PIXI.Sprite {
     }
     const text = char;
     canvas = canvas || document.createElement('canvas');
+    // TODO: ここのpixiIdを無理に設定してキャッシュヒットを防いでいるけれど、無理があるので後で直すべき。
+    canvas._pixiId = Math.random() * 10000 + "-desu";
 
     const texture = PIXI.Texture.fromCanvas(canvas, PIXI.settings.SCALE_MODE, 'text');
 
@@ -26,28 +28,73 @@ export default class Letter extends PIXI.Sprite {
 
     this.context = this.canvas.getContext('2d');
 
-    this.resolution = PIXI.settings.RESOLUTION;
+    // TODO: renderWebGLからresolution取得しないと辻褄合わない事に気づいた。。
+    // this.resolution = PIXI.settings.RESOLUTION;
+    this.resolution = 1/3;
 
     // drawText.
-    this._font = (new PIXI.TextStyle(style)).toFontString();
+    style = new PIXI.TextStyle(style);
+    this._font = style.toFontString();
 
-    this.canvas.width = 1920;
-    this.canvas.height = 300;
+    const measured = PIXI.TextMetrics.measureText(text, style, style.wordWrap, this.canvas);
+    const width = measured.width;
+    const height = measured.height;
+    const lines = measured.lines;
+    const lineHeight = measured.lineHeight;
+    const lineWidths = measured.lineWidths;
+    const maxLineWidth = measured.maxLineWidth;
+    const fontProperties = measured.fontProperties;
+
+
+    // this.canvas.width = 120;
+    // this.canvas.height = 120;
+
+    this.canvas.width = Math.ceil((width + (style.padding * 2)) * this.resolution);
+    this.canvas.height = Math.ceil((height + (style.padding * 2)) * this.resolution);
+    this._width = width + (style.padding * 2);
+    this._height = height + (style.padding * 2);
 
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context.scale(1, 1);
+    //debugger;
+    this.context.scale(this.resolution, this.resolution);
     this.context.font = this._font;
-    this.context.fillStyle = "black";
+    this.context.fillStyle = style.fill;
+    //this.context.miterLimit = style.miterLimit;
+    this.context.shadowBlur = 0;
+    this.context.globalAlpha = 1;
+
 
     // draw lines line by line
-    this.context.fillText(text, 30, 80);
+    const linePositionX = style.strokeThickness / 2;
+    const linePositionY = style.strokeThickness / 2 + fontProperties.ascent;
+
+    this.context.fillText(text, linePositionX, linePositionY);
 
     // update texture.
     texture.baseTexture.hasLoaded = true;
     texture.baseTexture.resolution = this.resolution;
 
+    texture.baseTexture.realWidth = this.canvas.width;
+    texture.baseTexture.realHeight = this.canvas.height;
+    texture.baseTexture.width = this.canvas.width / this.resolution;
+    texture.baseTexture.height = this.canvas.height / this.resolution;
+
     texture.trim.width = this.canvas.width / this.resolution;
     texture.trim.height = this.canvas.height / this.resolution;
+
+    const padding = style.padding;
+    texture.orig.width = texture._frame.width - (padding * 2);
+    texture.orig.height = texture._frame.height - (padding * 2);
+
+    this._texture = texture;
+  }
+
+  get width(){
+    return this._width;
+  }
+
+  get height(){
+    return this._height;
   }
 
   destroy(options)

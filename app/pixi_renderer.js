@@ -17,12 +17,29 @@ class PixiRenderer {
   async showText(label, text){
     let textSprite = new LilyText(text, {fontFamily : 'Arial', fontSize: 80, fill : 0x333333, align : 'center'});
 
-    this.sprites[label] = textSprite;
-    textSprite.y = 200;
-    this.pixi.stage.addChild(textSprite);
-    
-    let letter = new Letter(text[0], {fontFamily : 'Arial', fontSize: 80, fill : 0x333333, align : 'center'});
-    this.pixi.stage.addChild(letter);
+    const wait = async (time= 0) => {
+      return new Promise(resolve => { setTimeout(resolve, time); });
+    };
+
+    const characters = String.prototype.split.call(text, '');
+    let index = 0;
+    let current = '';
+    let x = 0;
+
+    while (index < text.length) {
+      await wait(50);
+
+      current = characters[index];
+      index++;
+      let letter = new Letter(current, {fontFamily : 'Arial', fontSize: 80, fill : 0x333333, align : 'center'});
+      letter.x = x;
+      letter.y = 500;
+      console.log(letter.width);
+      x += letter.width;
+      // TODO: フェードイン機構
+      // await wait(50);
+      this.pixi.stage.addChild(letter);
+    }
 
   }
 
