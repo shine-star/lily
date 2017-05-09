@@ -1,4 +1,5 @@
 var path = require('path');
+var WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = {
   entry: './app/index.js',
@@ -15,5 +16,8 @@ module.exports = {
       }
     ]
   },
-  devtool: 'source-map'
+  devtool: 'source-map',
+  plugins: [
+    new WebpackNotifierPlugin(),
+  ]
 };
