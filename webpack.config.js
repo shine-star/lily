@@ -18,6 +18,6 @@ module.exports = {
   },
   devtool: 'source-map',
   plugins: [
-    new WebpackNotifierPlugin(),
+    new WebpackNotifierPlugin({alwaysNotify: true}),
   ]
 };
