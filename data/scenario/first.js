@@ -16,6 +16,9 @@
   await tags.wait({time: 500});
   await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 1000});
 
+  await tags.text({label: "message", text: "こんにちは！"});
+  await tags.wait({time: 2000});
+
   await tags.fadein({label: "lily", storage: "M_LILY_A_04a.png", left: 400, top: 100, scale: 1.6, time: 500});
 
   // 表情変化

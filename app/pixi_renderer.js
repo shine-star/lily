@@ -1,11 +1,30 @@
 import 'pixi.js';
 
+// import MessageLayer from 'message_layer';
+import LilyText from './lily_text';
+
 class PixiRenderer {
   constructor(){
     // TODO: resolution option
     this.pixi = new PIXI.Application({width: 1920, height: 1080, resolution: 1/3});
     document.body.appendChild(this.pixi.view);
     this.sprites = {};
+  }
+
+  // 文字表示。アニメーション。ページ送り制御、etc....
+  // TODO: 何の情報をEngineとRendererの間でやりとりする必要があるのか
+  async showText(label, text){
+
+    let sprite = new LilyText(text, {fontFamily : 'Arial', fontSize: 120, fill : 0x333333, align : 'center'});
+
+    this.sprites[label] = sprite;
+    this.pixi.stage.addChild(sprite);
+    // TODO: sprite.children が [] らしい。 従って、charAtみたいな方法は使えそうにない。
+    // あと出来うるのは、TextMetrisを使ってstyleを元に横幅計算などを行い、行ごとにrectでclipすることで逐次表示を実現する方法だろうか。
+    // Canvas側が勝手に禁則処理してくれる場合、styleを元にした横幅計算が上手く行かなくて死ぬ
+    //let metrics = new MIXI.TextMetrics(text, {fontFamily : 'Arial', fontSize: 120, fill : 0x333333, align : 'center'});
+    //let metrics = PIXI.TextMetrics.measureText(text, {fontFamily : 'Arial', fontSize: 120, fill : 0x333333, align : 'center'}, true);
+    //debugger;
   }
 
   async addImage(label, resource){
