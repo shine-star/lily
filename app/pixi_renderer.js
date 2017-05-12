@@ -1,9 +1,7 @@
 import 'pixi.js';
 
-// import MessageLayer from 'message_layer';
-import LilyText from './lily_text';
-import Letter from './letter';
 import { animate } from './util';
+import MessageLayer from './message_layer';
 
 class PixiRenderer {
   constructor(){
@@ -16,32 +14,16 @@ class PixiRenderer {
   // 文字表示。アニメーション。ページ送り制御、etc....
   // TODO: 何の情報をEngineとRendererの間でやりとりする必要があるのか
   async showText(label, text){
-    let textSprite = new LilyText(text, {fontFamily : 'Arial', fontSize: 80, fill : 0x333333, align : 'center'});
-
-    const wait = async (time= 0) => {
-      return new Promise(resolve => { setTimeout(resolve, time); });
-    };
-
-    const characters = String.prototype.split.call(text, '');
-    let index = 0;
-    let current = '';
-    let x = 0;
-
-    while (index < text.length) {
-      await wait(50);
-
-      current = characters[index];
-      index++;
-      let letter = new Letter(current, {fontFamily : 'Arial', fontSize: 80, fill : 0x333333, align : 'center'});
-      letter.x = x;
-      letter.y = 500;
-      console.log(letter.width);
-      x += letter.width;
-      // TODO: フェードイン機構
-      // await wait(50);
-      this.pixi.stage.addChild(letter);
+    // TODO: メッセージレイヤは存在したら追加しなくて良いんじゃないのか？
+    let layer = this.sprites["message"];
+    if( layer === undefined ){
+      layer = new MessageLayer();
+      this.sprites["message"] = layer;
+      this.pixi.stage.addChild(layer);
+      layer.y = 400;
     }
 
+    await layer.add(text);
   }
 
   async addImage(label, resource){
