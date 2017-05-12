@@ -3,7 +3,7 @@ import 'pixi.js';
 // import MessageLayer from 'message_layer';
 import LilyText from './lily_text';
 import Letter from './letter';
-import Util from './util';
+import { animate } from './util';
 
 class PixiRenderer {
   constructor(){
@@ -81,7 +81,7 @@ class PixiRenderer {
     const sprite = this.sprites[label];
     if( sprite ) {
       const startAlpha = sprite.alpha;
-      await Util.animate(duration, (rate)=>{
+      await animate(duration, (rate)=>{
         sprite.alpha = startAlpha + rate * (alpha - startAlpha);
       });
     }
@@ -96,7 +96,7 @@ class PixiRenderer {
       const endX = left || sprite.x;
       const endY = top || sprite.y;
 
-      await Util.animate(duration, (rate)=>{
+      await animate(duration, (rate)=>{
         sprite.x = startX + rate * (endX - startX);
         sprite.y = startY + rate * (endY - startY);
       });
