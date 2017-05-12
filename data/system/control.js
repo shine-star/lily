@@ -12,4 +12,4 @@ engine.tags.call = async ({storage="", target=""} = {} ) => {
 
 engine.tags.macro = (name, func) => {
   engine.tags[name] = func;
-}
+};
