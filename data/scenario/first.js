@@ -18,6 +18,8 @@
 
   await tags.wait({time: 1000});
   await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
+  await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
+  await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
   await tags.wait({time: 2000});
 
   return;

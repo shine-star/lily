@@ -15,10 +15,10 @@ class PixiRenderer {
   // TODO: 何の情報をEngineとRendererの間でやりとりする必要があるのか
   async showText(label, text){
     // TODO: メッセージレイヤは存在したら追加しなくて良いんじゃないのか？
-    let layer = this.sprites["message"];
+    let layer = this.sprites[label];
     if( layer === undefined ){
-      layer = new MessageLayer();
-      this.sprites["message"] = layer;
+      layer = new MessageLayer({maxWidth: 1800, maxHeight: 400});
+      this.sprites[label] = layer;
       this.pixi.stage.addChild(layer);
       layer.y = 400;
     }
