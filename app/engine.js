@@ -14,6 +14,7 @@ class Engine {
 
   async run(){
     await this.evaluateSystemAsync('data/system/init.js');
+    await this.runScript("first.js");
   }
 
   async evaluateScript(path){
