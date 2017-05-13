@@ -75,8 +75,11 @@ class Engine {
     return Babel.transform(script, { presets: ['es2017'] }).code
   }
 
-  async runScript(filename){
+  async runScript(filename, target){
     const path = "data/scenario/" + filename;
+    if( target ){
+      this.skipUntilLabel = target;
+    }
     await this.evaluateScript(path);
   }
 

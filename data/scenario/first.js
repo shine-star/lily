@@ -95,7 +95,7 @@
   await tags.wait({time: 1000});
   // [jump storage="first.js"]
   await tags.remove({label: "message"});
-  await tags.call({storage: "first.js"});
+  await tags.call({storage: "first.js", target: 'debug'});
   return;
   // ===== Lily Script End =====
 })().then(()=>{
