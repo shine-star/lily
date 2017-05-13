@@ -4,15 +4,21 @@
 
   // [wait time=500]
   //await tags.wait({time: 500});
-  await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 100});
-
+  
   await tags.wait({time: 1000});
   await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
   await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
   await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
   await tags.wait({time: 2000});
 
-  return;
+  await tags.label({name: "debug"});
+  await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 100});
+  await tags.text({label: "message", text: "メッセージ1"});
+  await tags.text({label: "message", text: "メッセージ2"});
+  await tags.text({label: "message", text: "メッセージ3"});
+  await tags.text({label: "message", text: "メッセージ4"});
+  await tags.r({label: "message"});
+  await tags.text({label: "message", text: "メッセージ5"});
 
   await tags.fadein({label: "lily", storage: "M_LILY_A_04a.png", left: 400, top: 100, scale: 1.6, time: 500});
 
@@ -66,6 +72,7 @@
   // [wait time=1000]
   await tags.wait({time: 1000});
   // [jump storage="first.js"]
+  await tags.remove({label: "message"});
   await tags.call({storage: "first.js"});
   return;
   // ===== Lily Script End =====

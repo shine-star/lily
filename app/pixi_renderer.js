@@ -26,6 +26,17 @@ class PixiRenderer {
     await layer.add(text);
   }
 
+  async linebreak(label){
+    let layer = this.sprites[label];
+    if( layer === undefined ){
+      layer = new MessageLayer({maxWidth: 1800, maxHeight: 400});
+      this.sprites[label] = layer;
+      this.pixi.stage.addChild(layer);
+      layer.y = 400;
+    }
+    await layer.linebreak();
+  }
+
   async addImage(label, resource){
     let sprite = new PIXI.Sprite(resource.texture);
     this.sprites[label] = sprite;

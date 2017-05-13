@@ -7,7 +7,8 @@ class Game {
     this.engine = new Engine(renderer, loader);
   }
   async start(){
-    await this.engine.run();
+    //await this.engine.run();
+    await this.engine.load();
   }
 
 }

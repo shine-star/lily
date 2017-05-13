@@ -10,10 +10,26 @@ class Engine {
     this.renderer = renderer;
     this.loader = loader;
     this.tags = {};
+
+    this.skipUntilLabel = '';
+    this.skipUntilCursor = 0;
   }
 
   async run(){
     await this.evaluateSystemAsync('data/system/init.js');
+    await this.runScript("first.js");
+  }
+
+  //TODO: loadは引数を受け取るべきだとか色々問題はあるが、今やるべきなのはコードの途中から実行する機能
+  async load(){
+    await this.evaluateSystemAsync('data/system/init.js');
+
+    // debugラベルまでスキップするってこと
+    this.skipUntilLabel = 'debug';
+    // debugの後4つめのタグから実行するってこと
+    this.skipUntilCursor = 3;
+
+    // TODO: コールスタックの保持
     await this.runScript("first.js");
   }
 
@@ -61,6 +77,18 @@ class Engine {
 
   defineTag(name, func){
     this.tags[name] = async (options)=> {
+      if( this.skipUntilLabel.length > 0 ){
+        // TODO: もっとOOPらしい書き方にしたいけど暫定的に。
+        if( name == 'label' && this.skipUntilLabel == options.name ){
+          this.skipUntilLabel = '';
+        }
+        return;
+      }
+      if( this.skipUntilCursor > 0 ){
+        this.skipUntilCursor -= 1;
+        return;
+      }
+
       await func(options);
     };
   }

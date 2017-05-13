@@ -14,6 +14,7 @@ export default class MessageLayer extends PIXI.Container {
 
     this.maxWidth = maxWidth;
     this.maxHeight = maxHeight;
+    this.lineHeight = 100;
 
     this.letterX = 0;
     this.letterY = 0;
@@ -23,14 +24,13 @@ export default class MessageLayer extends PIXI.Container {
   async add(text)
   {
     const characters = String.prototype.split.call(text, '');
-    const lineHeight = 100;
+
     let index = 0;
 
     while (index < text.length) {
       // 簡易的な改行処理
       if( this.letterX > this.maxWidth ){
-        this.letterX = 0;
-        this.letterY += lineHeight;
+        await this.linebreak();
       }
       if( this.letterY > this.maxHeight ){
         //TODO: クリック待ち？
@@ -47,6 +47,12 @@ export default class MessageLayer extends PIXI.Container {
       await wait(30);
 
     }
+  }
+
+  async linebreak()
+  {
+    this.letterX = 0;
+    this.letterY += this.lineHeight;
   }
 
   // クリア
