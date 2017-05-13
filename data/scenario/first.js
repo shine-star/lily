@@ -2,16 +2,6 @@
   "use strict";
   // ===== Lily Script Start =====
 
-  tags.macro("fadein", async ({label, storage, left=0.0, top=0.0, scale=1.0, time=500} = {})=>{
-    await tags.image({label: label, storage: storage, opacity: 0.0, left: left, top: top, scale: scale});
-    await tags.fade({label: label, opacity: 1.0, time: time});
-  });
-
-  tags.macro("fadeout", async ({label, time=500} = {})=>{
-    await tags.fade({label: label, opacity: 0.0, time: time});
-    await tags.remove({label: label});
-  });
-
   // [wait time=500]
   //await tags.wait({time: 500});
   await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 100});

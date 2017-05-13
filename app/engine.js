@@ -59,6 +59,12 @@ class Engine {
     await this.evaluateSystem(path);
   }
 
+  defineTag(name, func){
+    this.tags[name] = async (options)=> {
+      await func(options);
+    };
+  }
+
 }
 
 export default Engine;
