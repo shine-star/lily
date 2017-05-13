@@ -45,9 +45,14 @@ class Engine {
 
   async evaluateScript(path){
     //TODO: あらゆる観点でのエラー処理, 単にfetchを呼ぶのではなくオプションを正しく指定したwrapperを用意したい（redirectをフォローすべきでない、等があるので。）
+    console.log("fetch start" + Date.now());
     const response = await fetch(path);
+    console.log("fetch end" + Date.now());
     const raw = await response.text();
+    console.log("babel transform start" + Date.now());
     const asyncGameFunc = new Function("resolve", "tags", this.transform(raw));
+    console.log("babel transform end" + Date.now());
+
     await ((tags)=>{
       return new Promise(resolve => { asyncGameFunc(resolve, tags); });
     })(this.tags);
