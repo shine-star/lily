@@ -13,6 +13,16 @@ class Engine {
 
     this.skipUntilLabel = '';
     this.skipUntilCursor = 0;
+
+    //TODO: ちゃんとしたコールスタックの実装で多重if-elseへの対応
+    this.skipUntilElseOrEndIf = false;
+    this.skipUntilEndIf = false;
+
+    this.variables = {
+      tf: {},
+      f: {},
+      sf: {}
+    };
   }
 
   async run(){
@@ -27,7 +37,7 @@ class Engine {
     // debugラベルまでスキップするってこと
     this.skipUntilLabel = 'debug';
     // debugの後4つめのタグから実行するってこと
-    this.skipUntilCursor = 3;
+    this.skipUntilCursor = 0;
 
     // TODO: コールスタックの保持
     await this.runScript("first.js");
@@ -77,6 +87,7 @@ class Engine {
 
   defineTag(name, func){
     this.tags[name] = async (options)=> {
+      // jump/call及びセーブデータのロード系
       if( this.skipUntilLabel.length > 0 ){
         // TODO: もっとOOPらしい書き方にしたいけど暫定的に。
         if( name == 'label' && this.skipUntilLabel == options.name ){
@@ -86,6 +97,19 @@ class Engine {
       }
       if( this.skipUntilCursor > 0 ){
         this.skipUntilCursor -= 1;
+        return;
+      }
+      // if-else系 (きちんとコールスタックを作らない暫定版)
+      if( this.skipUntilElseOrEndIf ){
+        if( name == 'else' || name == 'endif' ){
+          this.skipUntilElseOrEndIf = false;
+        }
+        return;
+      }
+      if( this.skipUntilEndIf ) {
+        if( name == 'endif' ){
+          this.skipUntilEndIf = false;
+        }
         return;
       }
 

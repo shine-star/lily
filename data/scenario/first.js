@@ -7,12 +7,34 @@
   
   await tags.wait({time: 1000});
   await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
-  await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
-  await tags.text({label: "message", text: "榊原「えー、はい、ちょうど時間になりましたので、各チームで研究するテーマについての説明を始めます。"});
   await tags.wait({time: 2000});
-
+  await tags.remove({label: "message"});
+  
   await tags.label({name: "debug"});
   await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 100});
+
+  await tags.eval((sf, f, tf)=>{ f.my_flag = true; });
+  
+  // TODO: returnを入れるの割と難しい。 ASTの最後の式にreturnを差し込むとかになるのか？ 単一の文しか許可せずに別途evalさせるのもアリ。
+  await tags.if((sf, f, tf)=>{ return f.my_flag; });
+  {
+    await tags.text({label: "message", text: "if内部のメッセージ"});
+    await tags.r({label: "message"});
+  }
+  await tags.else();
+  {
+    await tags.text({label: "message", text: "if外部のメッセージ"});
+    await tags.r({label: "message"});
+  }
+  await tags.endif();
+
+  await tags.wait({time: 1000});
+  await tags.text({label: "message", text: "endif抜けた後のメッセージ"});
+  await tags.r({label: "message"});
+  await tags.wait({time: 1000});
+
+  //await tags.eval((sf, f, tf)=>{ alert(f.hoge); });
+
   await tags.text({label: "message", text: "メッセージ1"});
   await tags.text({label: "message", text: "メッセージ2"});
   await tags.text({label: "message", text: "メッセージ3"});
