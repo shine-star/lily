@@ -45,7 +45,9 @@ class Engine {
 
   async evaluateScript(path){
     //TODO: あらゆる観点でのエラー処理, 単にfetchを呼ぶのではなくオプションを正しく指定したwrapperを用意したい（redirectをフォローすべきでない、等があるので。）
-    const response = await fetch(path);
+    const requestHead = { headers: new Headers({ 'pragma': 'no-cache', 'cache-control': 'no-cache'}) };
+    const request = new Request(path);
+    const response = await fetch(request, requestHead);
     const raw = await response.text();
     const asyncGameFunc = new Function("resolve", "tags", this.transform(raw));
     await ((tags)=>{
