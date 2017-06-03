@@ -113,7 +113,7 @@ class PixiRenderer {
     this.sprites[newlabel] = sprite;
     delete this.sprites[label];
   }
-  
+
   on(name, func){
     this.eventTrackerLayer.on(name, func);
   }
