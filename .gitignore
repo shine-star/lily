@@ -3,7 +3,7 @@
 .idea
 
 # Webpack
-dist
+/dist
 
 # Created by https://www.gitignore.io/api/node
 
