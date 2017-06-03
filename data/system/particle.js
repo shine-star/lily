@@ -99,6 +99,15 @@ engine.defineTag('sakura', async ({count} = {} ) => {
 });
 
 engine.defineTag('stopsakura', async () => {
-  engine.tags.remove({label: 'sakura'});
+  engine.tags.fadeout({label: 'sakura'});
   //TODO: tickの削除
+});
+
+
+engine.defineTag('glitch', async ()=> {
+  engine.glitch();
+});
+
+engine.defineTag('stopglitch', async ()=> {
+  engine.stopGlitch();
 });

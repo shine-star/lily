@@ -137,6 +137,57 @@ class Engine {
     this.renderer.off(name, func);
   }
 
+  glitch(){
+    let filter = new GlitchFilter();
+    this.renderer.pixi.stage.filters = [filter];
+
+    this.renderer.pixi.ticker.add(()=>{
+      // 時間経過をシェーダに伝える
+      // filter.uniforms.time += this.renderer.pixi.ticker.elapsedMS * 0.001;
+      filter.uniforms.rand = Math.random() * 5;
+    });
+  }
+
+  stopGlitch(){
+    this.renderer.pixi.stage.filters = [];
+  }
+
+}
+
+// https://github.com/ktingvoar/PixiGlitch/blob/master/src/ConvergenceFilter.js より
+class GlitchFilter extends PIXI.Filter {
+  constructor() {
+    var fragment = `
+precision mediump float;
+uniform float rand;
+uniform vec4 dimensions;
+uniform sampler2D uSampler;
+varying vec2 vTextureCoord;
+void main (void)
+{
+   vec4 col = texture2D(uSampler, vTextureCoord);
+   vec4 col_r = texture2D(uSampler, vTextureCoord + vec2((-35.0 / dimensions.x) * rand, 0));
+   vec4 col_l = texture2D(uSampler, vTextureCoord + vec2((35.0 / dimensions.x) * rand, 0));
+   vec4 col_g = texture2D(uSampler, vTextureCoord + vec2((-7.5 / dimensions.x) * rand, 0));
+   col.r = col.r + col_l.r * max(1.0, sin(vTextureCoord.y * dimensions.y * 1.2) * 2.5) * rand;
+   col.b = col.b + col_r.b * max(1.0, sin(vTextureCoord.y * dimensions.y * 1.2) * 2.5) * rand;
+   col.g = col.g + col_g.g * max(1.0, sin(vTextureCoord.y * dimensions.y * 1.2) * 2.5) * rand;
+   gl_FragColor.rgba = col.rgba;
+}
+    `;
+
+    super(
+      // vertex shader
+      null,
+      // fragment shader
+      fragment,
+      // uniforms
+      {
+        rand: {type: '1f', value: 0.5},
+        dimensions: {type: '4fv', value: [0, 0, 0, 0]},
+      }
+    );
+  }
 }
 
 export default Engine;
