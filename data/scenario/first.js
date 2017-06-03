@@ -14,7 +14,6 @@
   await tags.text({label: "message", text: "この手前でクリック待ちしてれば成功"});
   await tags.l();
 
-  await tags.label({name: "debug"});
   await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 100});
 
   await tags.eval((sf, f, tf)=>{ f.my_flag = true; });
@@ -99,7 +98,7 @@
   await tags.wait({time: 1000});
   // [jump storage="first.js"]
   await tags.remove({label: "message"});
-  await tags.call({storage: "first.js", target: 'debug'});
+  await tags.call({storage: "first.js"});
   return;
   // ===== Lily Script End =====
 })().then(()=>{
