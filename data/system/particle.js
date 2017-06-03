@@ -104,10 +104,10 @@ engine.defineTag('stopsakura', async () => {
 });
 
 
-engine.defineTag('glitch', async ()=> {
-  engine.glitch();
+engine.defineTag('noise', async ()=> {
+  engine.noise();
 });
 
-engine.defineTag('stopglitch', async ()=> {
-  engine.stopGlitch();
+engine.defineTag('stopnoise', async ()=> {
+  engine.stopNoise();
 });

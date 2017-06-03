@@ -14,9 +14,9 @@
   await tags.text({label: "message", text: "画面が乱れるエフェクト"});
   await tags.l();
   await tags.remove({label: "message"});
-  await tags.glitch();
+  await tags.noise();
   await tags.l();
-  await tags.stopglitch();
+  await tags.stopnoise();
   await tags.l();
   await tags.stopsakura();
   await tags.wait({time: 1000});
