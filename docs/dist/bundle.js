@@ -20499,30 +20499,33 @@ var Engine = function () {
     key: 'evaluateScript',
     value: function () {
       var _ref3 = _asyncToGenerator(_regenerator2.default.mark(function _callee3(path) {
-        var response, raw, asyncGameFunc;
+        var requestHead, request, response, raw, asyncGameFunc;
         return _regenerator2.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.next = 2;
-                return fetch(path);
+                //TODO: あらゆる観点でのエラー処理, 単にfetchを呼ぶのではなくオプションを正しく指定したwrapperを用意したい（redirectをフォローすべきでない、等があるので。）
+                requestHead = { headers: new Headers({ 'pragma': 'no-cache', 'cache-control': 'no-cache' }) };
+                request = new Request(path);
+                _context3.next = 4;
+                return fetch(request, requestHead);
 
-              case 2:
+              case 4:
                 response = _context3.sent;
-                _context3.next = 5;
+                _context3.next = 7;
                 return response.text();
 
-              case 5:
+              case 7:
                 raw = _context3.sent;
                 asyncGameFunc = new Function("resolve", "tags", this.transform(raw));
-                _context3.next = 9;
+                _context3.next = 11;
                 return function (tags) {
                   return new Promise(function (resolve) {
                     asyncGameFunc(resolve, tags);
                   });
                 }(this.tags);
 
-              case 9:
+              case 11:
               case 'end':
                 return _context3.stop();
             }
