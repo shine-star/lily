@@ -6,7 +6,23 @@
   //await tags.wait({time: 500});
 
   await tags.fadein({label: "bg", storage: "everett_effect.jpg", time: 100});
+  await tags.text({label: "message", text: "桜吹雪"});
+  await tags.l();
+  await tags.remove({label: "message"});
   await tags.sakura({count: 1000});
+  await tags.l();
+  await tags.text({label: "message", text: "画面が乱れるエフェクト"});
+  await tags.l();
+  await tags.remove({label: "message"});
+  await tags.noise();
+  await tags.l();
+  await tags.stopfilter();
+  await tags.text({label: "message", text: "セピア色エフェクト"});
+  await tags.l();
+  await tags.remove({label: "message"});
+  await tags.sepia();
+  await tags.l();
+  await tags.stopfilter();
   await tags.l();
   await tags.stopsakura();
   await tags.wait({time: 1000});

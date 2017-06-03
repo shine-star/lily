@@ -99,6 +99,19 @@ engine.defineTag('sakura', async ({count} = {} ) => {
 });
 
 engine.defineTag('stopsakura', async () => {
-  engine.tags.remove({label: 'sakura'});
+  engine.tags.fadeout({label: 'sakura'});
   //TODO: tickの削除
+});
+
+
+engine.defineTag('noise', async ()=> {
+  engine.noise();
+});
+
+engine.defineTag('sepia', async ()=> {
+  engine.sepia();
+});
+
+engine.defineTag('stopfilter', async ()=> {
+  engine.stopFilter();
 });

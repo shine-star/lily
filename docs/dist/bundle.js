@@ -20399,6 +20399,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20774,10 +20778,71 @@ var Engine = function () {
     value: function off(name, func) {
       this.renderer.off(name, func);
     }
+  }, {
+    key: 'noise',
+    value: function noise() {
+      var filter = new NoiseFilter();
+      this.renderer.pixi.stage.filters = [filter];
+    }
+  }, {
+    key: 'sepia',
+    value: function sepia() {
+      var filter = new SepiaFilter();
+      this.renderer.pixi.stage.filters = [filter];
+    }
+  }, {
+    key: 'stopFilter',
+    value: function stopFilter() {
+      this.renderer.pixi.stage.filters = [];
+    }
   }]);
 
   return Engine;
 }();
+
+var NoiseFilter = function (_PIXI$Filter) {
+  _inherits(NoiseFilter, _PIXI$Filter);
+
+  function NoiseFilter() {
+    _classCallCheck(this, NoiseFilter);
+
+    var fragment = '\nprecision mediump float;\nuniform sampler2D uSampler;\nvarying vec2 vTextureCoord;\n\nfloat rand(vec2 co){\n    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);\n}\n\nvoid main (void)\n{\n   vec4 col = texture2D(uSampler, vTextureCoord);\n   col.rgb = col.rgb * (0.7 + 0.3 * rand(vTextureCoord) );\n   gl_FragColor.rgba = col.rgba;\n}\n    ';
+
+    return _possibleConstructorReturn(this, (NoiseFilter.__proto__ || Object.getPrototypeOf(NoiseFilter)).call(this,
+    // vertex shader
+    null,
+    // fragment shader
+    fragment,
+    // uniforms
+    {
+      dimensions: { type: '4fv', value: [0, 0, 0, 0] }
+    }));
+  }
+
+  return NoiseFilter;
+}(PIXI.Filter);
+
+var SepiaFilter = function (_PIXI$Filter2) {
+  _inherits(SepiaFilter, _PIXI$Filter2);
+
+  function SepiaFilter() {
+    _classCallCheck(this, SepiaFilter);
+
+    var fragment = '\nprecision mediump float;\nuniform sampler2D uSampler;\nvarying vec2 vTextureCoord;\n\nvoid main(void)\n{\n   vec4 color = texture2D(uSampler, vTextureCoord);\n   vec4 col = color;\n   col.r = clamp(color.r * 0.393 + color.g * 0.769 + color.b * 0.189, 0.0, 1.0);\n   col.g = clamp(color.r * 0.349 + color.g * 0.686 + color.b * 0.168, 0.0, 1.0);\n   col.b = clamp(color.r * 0.272 + color.g * 0.534 + color.b * 0.131, 0.0, 1.0);\n   // col.rgb = col.rgb * (0.7 + 0.3 * rand(vTextureCoord) );\n   gl_FragColor.rgba = col.rgba;\n}\n    ';
+
+    return _possibleConstructorReturn(this, (SepiaFilter.__proto__ || Object.getPrototypeOf(SepiaFilter)).call(this,
+    // vertex shader
+    null,
+    // fragment shader
+    fragment,
+    // uniforms
+    {
+      dimensions: { type: '4fv', value: [0, 0, 0, 0] }
+    }));
+  }
+
+  return SepiaFilter;
+}(PIXI.Filter);
 
 exports.default = Engine;
 
