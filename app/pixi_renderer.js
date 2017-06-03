@@ -4,9 +4,10 @@ import { animate } from './util';
 import MessageLayer from './message_layer';
 
 class PixiRenderer {
-  constructor(){
-    // TODO: resolution option
-    this.pixi = new PIXI.Application({width: 1920, height: 1080, resolution: 1/3});
+  constructor(width=1920, height=1080, resolution=1/3){
+    this.width = width;
+    this.height = height;
+    this.pixi = new PIXI.Application({width: width, height: height, resolution: resolution});
     document.body.appendChild(this.pixi.view);
     this.sprites = {};
   }
