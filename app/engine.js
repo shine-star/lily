@@ -140,10 +140,14 @@ class Engine {
   noise(){
     let filter = new NoiseFilter();
     this.renderer.pixi.stage.filters = [filter];
-
   }
 
-  stopNoise(){
+  sepia(){
+    let filter = new SepiaFilter();
+    this.renderer.pixi.stage.filters = [filter];
+  }
+
+  stopFilter(){
     this.renderer.pixi.stage.filters = [];
   }
 
@@ -164,6 +168,39 @@ void main (void)
 {
    vec4 col = texture2D(uSampler, vTextureCoord);
    col.rgb = col.rgb * (0.7 + 0.3 * rand(vTextureCoord) );
+   gl_FragColor.rgba = col.rgba;
+}
+    `;
+
+    super(
+      // vertex shader
+      null,
+      // fragment shader
+      fragment,
+      // uniforms
+      {
+        dimensions: {type: '4fv', value: [0, 0, 0, 0]},
+      }
+    );
+  }
+}
+
+
+class SepiaFilter extends PIXI.Filter {
+  constructor() {
+    var fragment = `
+precision mediump float;
+uniform sampler2D uSampler;
+varying vec2 vTextureCoord;
+
+void main(void)
+{
+   vec4 color = texture2D(uSampler, vTextureCoord);
+   vec4 col = color;
+   col.r = clamp(color.r * 0.393 + color.g * 0.769 + color.b * 0.189, 0.0, 1.0);
+   col.g = clamp(color.r * 0.349 + color.g * 0.686 + color.b * 0.168, 0.0, 1.0);
+   col.b = clamp(color.r * 0.272 + color.g * 0.534 + color.b * 0.131, 0.0, 1.0);
+   // col.rgb = col.rgb * (0.7 + 0.3 * rand(vTextureCoord) );
    gl_FragColor.rgba = col.rgba;
 }
     `;

@@ -108,6 +108,10 @@ engine.defineTag('noise', async ()=> {
   engine.noise();
 });
 
-engine.defineTag('stopnoise', async ()=> {
-  engine.stopNoise();
+engine.defineTag('sepia', async ()=> {
+  engine.sepia();
+});
+
+engine.defineTag('stopfilter', async ()=> {
+  engine.stopFilter();
 });
