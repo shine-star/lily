@@ -1,0 +1,31 @@
+{
+  "name": "lily-engine",
+  "version": "0.0.1",
+  "description": "HTML5 Visual Novel Engine - Lily",
+  "main": "index.js",
+  "repository": "git@github.com:AknEp/lily.git",
+  "author": "AknEp",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack -w",
+    "start": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-es2017": "^6.24.1",
+    "path": "^0.12.7",
+    "webpack": "^2.5.0",
+    "webpack-dev-server": "^2.4.5",
+    "webpack-notifier": "^1.5.0"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.23.0",
+    "babel-standalone": "^6.24.0",
+    "pixi.js": "^4.5.1",
+    "whatwg-fetch": "^2.0.3"
+  }
+}
