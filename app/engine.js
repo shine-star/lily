@@ -122,6 +122,21 @@ class Engine {
     };
   }
 
+  // ゲーム画面全体へのpointerup等の操作を一回だけ受け付ける
+  once(name, func){
+    this.renderer.once(name, func);
+  }
+
+  // ゲーム画面全体へのpointerup等の操作を複数回受け付ける
+  on(name, func){
+    this.renderer.on(name, func);
+  }
+
+  // ゲーム画面全体へのpointerup等の操作を受け付けるのをやめる
+  off(name, func){
+    this.renderer.off(name, func);
+  }
+
 }
 
 export default Engine;

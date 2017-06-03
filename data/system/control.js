@@ -40,11 +40,15 @@ engine.defineTag('else', async () => {
   }
 });
 
-engine.defineTag('endif', async() => {
+engine.defineTag('endif', async () => {
   if( engine.skipUntilEndIf ){
     engine.skipUntilEndIf = false;
   }
   if( engine.skipUntilElseOrEndIf ){
     engine.skipUntilElseOrEndIf = false;
   }
+});
+
+engine.defineTag('l', async () => {
+  return new Promise(resolve => { engine.once('pointerup', resolve); });
 });

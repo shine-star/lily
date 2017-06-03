@@ -10,6 +10,17 @@ class PixiRenderer {
     this.pixi = new PIXI.Application({width: width, height: height, resolution: resolution});
     document.body.appendChild(this.pixi.view);
     this.sprites = {};
+    this.configureEventTracking();
+  }
+
+  // ゲーム画面全域でのタップ/クリックイベント等を取り扱うためのレイヤを設定する
+  configureEventTracking(){
+    let layer = new PIXI.Graphics();
+    layer.beginFill(0xf0000, 0.0);
+    layer.drawRect(0, 0, this.width, this.height);
+    layer.interactive = true;
+    this.pixi.stage.addChild( layer );
+    this.eventTrackerLayer = layer;
   }
 
   // 文字表示。アニメーション。ページ送り制御、etc....
@@ -101,6 +112,18 @@ class PixiRenderer {
     const sprite = this.sprites[label];
     this.sprites[newlabel] = sprite;
     delete this.sprites[label];
+  }
+  
+  on(name, func){
+    this.eventTrackerLayer.on(name, func);
+  }
+
+  once(name, func){
+    this.eventTrackerLayer.once(name, func);
+  }
+
+  off(name, func){
+    this.eventTrackerLayer.off(name, func);
   }
 
 }
