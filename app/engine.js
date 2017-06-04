@@ -213,12 +213,11 @@ void main(void)
   vec2 pos = vTextureCoord.xy / filterClamp.zw;
   vec2 target = pos;
   
-  if( sin(t * 10.0) < 0.8 ){
-    // do nothing.
-  }else if( sin(pos.y * M_PI * 40.0) > 0.0 ){
-    target.x = min(target.x + 0.05, 0.99);
-  }else{
-    target.x = max(target.x - 0.05, 0.01);
+  float doornot = step(0.8, sin(t * 10.0));
+  
+  float offsetSign = sign( sin(pos.y * M_PI * 40.0) ) * doornot;
+  if( abs(offsetSign) > 0.0 ){
+    target.x = clamp(target.x + (offsetSign * 0.05), 0.01, 0.99);
   }
   
   gl_FragColor = texture2D(uSampler, target * filterClamp.zw); 
