@@ -11,12 +11,6 @@
   await tags.remove({label: "message"});
   await tags.sakura({count: 1000});
   await tags.l();
-  await tags.text({label: "message", text: "画面が乱れるエフェクト"});
-  await tags.l();
-  await tags.remove({label: "message"});
-  await tags.noise();
-  await tags.l();
-  await tags.stopfilter();
   await tags.text({label: "message", text: "セピア色エフェクト"});
   await tags.l();
   await tags.remove({label: "message"});
@@ -84,6 +78,14 @@
         await tags.fade({label: "lily2", opacity: 1.0, time: 500});
       })()
   ]);
+
+  await tags.remove({label: "message"});
+  await tags.text({label: "message", text: "画面が乱れるエフェクト"});
+  await tags.l();
+  await tags.remove({label: "message"});
+  await tags.glitch();
+  await tags.l();
+  await tags.stopfilter();
 
   await tags.relabel({label: "lily2", newlabel: "lily"});
 

@@ -112,6 +112,10 @@ engine.defineTag('sepia', async ()=> {
   engine.sepia();
 });
 
+engine.defineTag('glitch', async ()=> {
+  engine.glitch();
+});
+
 engine.defineTag('stopfilter', async ()=> {
   engine.stopFilter();
 });
