@@ -142,6 +142,14 @@ class Engine {
     this.renderer.pixi.stage.filters = [filter];
   }
 
+  glitch(){
+    let filter = new GlitchFilter();
+    this.renderer.pixi.stage.filters = [filter];
+    this.renderer.pixi.ticker.add((delta)=>{
+      filter.uniforms.t += delta * 0.01;
+    });
+  }
+
   sepia(){
     let filter = new SepiaFilter();
     this.renderer.pixi.stage.filters = [filter];
@@ -185,6 +193,49 @@ void main (void)
   }
 }
 
+
+
+class GlitchFilter extends PIXI.Filter {
+  constructor() {
+    var fragment = `
+precision mediump float;
+
+varying vec2 vTextureCoord;
+
+uniform sampler2D uSampler;
+uniform vec4 filterClamp;
+uniform float t;
+
+#define M_PI 3.1415926535897932384626433832795
+
+void main(void)
+{
+  vec2 pos = vTextureCoord.xy / filterClamp.zw;
+  vec2 target = pos;
+  
+  if( sin(t * 10.0) < 0.8 ){
+    // do nothing.
+  }else if( sin(pos.y * M_PI * 40.0) > 0.0 ){
+    target.x = min(target.x + 0.05, 0.99);
+  }else{
+    target.x = max(target.x - 0.05, 0.01);
+  }
+  
+  gl_FragColor = texture2D(uSampler, target * filterClamp.zw); 
+}
+    `;
+
+    super(
+      // vertex shader
+      null,
+      // fragment shader
+      fragment,
+      {
+        t: {type: '1f', value: 0.0},
+      }
+    );
+  }
+}
 
 class SepiaFilter extends PIXI.Filter {
   constructor() {
